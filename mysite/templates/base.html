@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Default title {% endblock %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="min-h-screen flex flex-row bg-gray-300">
+        <div class="flex flex-col bg-white rounded-r-3xl overflow-hidden w-50">
+            <div class="flex justify-center items-center h-20 shadow-md">
+                <h1 class="uppercase text-indigo-700 font-medium">App</h1>
+            </div>
+            <ul class="flex-col py-5">
+                <li>
+                    <a href="/" class="flex flex-row items-center h-12 text-gray-500 transform transition-transform 
+                    ease-in-duration-100 hover:text-gray-800 hover:translate-x-2">
+                <span class="inline-flex justify-center items-center h-12 w-12">
+                    <i class="bx bx-home"></i>
+                </span>
+                <h1 class="font-medium text-sm">Home</h1>
+                </a>
+                </li>
+                {% if request.user.is_authenticated %}
+                   <li>
+                <a href="{% url 'feed:new_post' %}" class="flex flex-row items-center h-12 text-gray-500 transform transition-transform 
+                    ease-in-duration-100 hover:text-gray-800 hover:translate-x-2 js-toggle-modal">
+                 <span class="inline-flex justify-center items-center h-12 w-12">
+                    <i class="bx bx-layer-plus"></i>
+                </span>
+                <h1 class="font-medium text-sm">New post</h1>
+                </a>
+                </li>
+                <li>
+                <a href="{% url 'account_logout' %}" class="flex flex-row items-center h-12 text-gray-500 transform transition-transform 
+                    ease-in-duration-100 hover:text-gray-800 hover:translate-x-2">
+                 <span class="inline-flex justify-center items-center h-12 w-12">
+                    <i class="bx bx-log-out"></i>
+                </span>
+                <h1 class="font-medium text-sm">Log out</h1>
+                </a>
+                </li>
+                {% else %}
+                 <li>
+                <a href="{% url 'account_login' %}" class="flex flex-row items-center h-12 text-gray-500 transform transition-transform 
+                    ease-in-duration-100 hover:text-gray-800 hover:translate-x-2">
+                 <span class="inline-flex justify-center items-center h-12 w-12">
+                    <i class="bx bx-log-in"></i>
+                </span>
+                <h1 class="font-medium text-sm">Log in</h1>
+                </a>
+                </li>
+                {% endif %}
+
+            </ul>
+        </div>
+        <div class="p-16">
+            {% block body %}
+            {% block content %}
+            {% endblock %}
+            {% endblock %}
+        </div>
+        {% if request.user.is_authenticated %}
+        <div class="fixed hidden flex bottom-0 left-0  items-center justify-center w-full h-full js-modal" style="background-color:rgb(80, 75, 75,0.7);">
+            <div class="w-1/2 bg-white rounded">
+                <div class="flex flex-col items-start py-2 px-4">
+                    <div class="flex w-full items-center justify-between">
+                        <span class="text-lg  font-medium">New post</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x js-toggle-modal" viewBox="0 0 16 16">
+  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+</svg>
+
+                    </div>
+                    <div class="border-b mt-1 border-indigo-400 w-full"></div>
+                    <div class="mt-3 w-full">
+                        <textarea class="border border-indigo-500 w-full js-post-text" rows="3" maxlength="240" data-post-url="{% url 'feed:new_post' %}" placeholder="Enter your new post"></textarea>
+                    </div>
+                    <div class="mt-2 ml-auto">
+                         <button class="flex border-b-2 border-indigo-500 text-gray-800 bg-white items-center justify-center 
+        hover:bg-indigo-500 hover:text-white shadow-md rounded py-2 px-4 js-submit" type="button">
+    <span class="text-medium font-medium  mr-2">Create post</span>
+    <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="12" height="12">
+        <path d="m4.173,13h19.829L4.201,23.676c-.438.211-.891.312-1.332.312-.696,0-1.362-.255-1.887-.734-.84-.77-1.115-1.905-.719-2.966l.056-.123,3.853-7.165Zm-.139-12.718C2.981-.22,1.748-.037.893.749.054,1.521-.22,2.657.18,3.717l3.979,7.283h19.841L4.11.322l-.076-.04Z"/>
+    </svg>
+    </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
+    
+</body>
+</html>

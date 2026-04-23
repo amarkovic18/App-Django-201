@@ -1,0 +1,42 @@
+{% extends "account/base.html" %}
+{% load allauth account i18n %}
+{% block title %}SignUp {% endblock %}
+{% block content %}
+{% element h1 %}
+{% trans "Sign up" %}
+{% endelement %}
+{% setvar link %}
+<a href="{{login_url}}">
+    {% endsetvar %}
+    {% setvar end_link %}
+</a>
+{% endsetvar %}
+{% element p %}
+{% blocktranslate %}If you have an account, please {{link}}login{{end_link}}
+{% endblocktranslate %}
+{% endelement %}
+{% if not SOCIALACCOUNT_ONLY %}
+{% url 'account_signup' as signup_url %}
+{% element form form=form method="post" tags="entrance,signup" %}
+{% slot body %}
+{% csrf_token %}
+{% element fields form=form %}
+{% endelement %}
+{{redirect_field}}
+{% endslot %}
+{% slot actions %}
+{% element button type="submit" tags="prominent,signup" %}
+{% trans "Sign Up" %}
+{% endelement %}
+{% endslot %}
+{% endelement %}
+{% endif %}
+{% if PASSKEY_SIGNUP_ENABLED %}
+{% element button href=signup_by_passkey_url tags="prominent,outline,primary,signup" %}
+{% trans "Sign up using a passkey" %}
+{% endelement %}
+{% endif %}
+{% if SOCIALACCOUNT_ENABLED %}
+{% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+{% endif %}
+{% endblock %}

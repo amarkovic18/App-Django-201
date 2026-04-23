@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block nav %}{% endblock%}
+{% block body %}
+{% if messages %}
+<div>
+    <strong>Messages</strong>
+    {% for message in messages %}
+    <ul>
+        <li>{{message}}</li>
+    </ul>
+    {% endfor %}
+</div>
+{% endif %}
+ {% block content %}{% endblock %}
+ {% endblock %}
